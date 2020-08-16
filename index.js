@@ -31,4 +31,19 @@ const getQuote = async () => {
 	}
 }
 
+// Tweet Quote
+const tweetQuote = () => {
+	const quote = quoteText.textContent
+	const author = authorText.textContent
+
+	// reference: https://developer.twitter.com/en/docs/twitter-for-websites/tweet-button/guides/web-intent
+	const twitterUrl = `https://twitter.com/intent/tweet?text=${quote} - ${author}`
+	window.open(twitterUrl, '_blank')
+}
+
+// Event Listener
+newQuoteBtn.addEventListener('click', getQuote)
+twitterBtn.addEventListener('click', tweetQuote)
+
+// On Load
 getQuote()
