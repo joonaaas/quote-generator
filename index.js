@@ -6,7 +6,7 @@ const newQuoteBtn = document.querySelector('#new-quote')
 
 // Get quote from API
 const getQuote = async () => {
-	const proxyUrl = 'https://cors-anywhere.herokuapp.com/'
+	const proxyUrl = 'https://rocky-earth-03441.herokuapp.com/'
 	const apiUrl =
 		'http://api.forismatic.com/api/1.0/?method=getQuote&lang=en&format=json'
 
@@ -21,13 +21,11 @@ const getQuote = async () => {
 			: (authorText.textContent = data.quoteAuthor)
 
 		// Reduce font size if the quotes are long
-		if (data.quoteText.length > 50) {
-			quoteText.classList.toggle('long-quote')
-		} else {
-			quoteText.classList.toggle('long-quote')
-		}
+		data.quoteText.length > 120
+			? quoteText.classList.add('long-quote')
+			: quoteText.classList.remove('long-quote')
 
-		authorText.textContent = data.quoteAuthor
+		quoteText.textContent = data.quoteText
 	} catch (error) {
 		getQuote()
 	}
