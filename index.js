@@ -3,14 +3,28 @@ const quoteText = document.querySelector('#quote')
 const authorText = document.querySelector('#author')
 const twitterBtn = document.querySelector('#twitter')
 const newQuoteBtn = document.querySelector('#new-quote')
+const loader = document.querySelector('#loader')
 
-// Get quote from API
-const getQuote = async () => {
+const showLoadingSpinner = () => {
+	loader.hidden = false
+	quoteContainer.hidden = true
+}
+
+const stopLoadingSpinner = () => {
+	if (!loader.hidden) {
+		quoteContainer.hidden = false
+		loader.hidden = true
+	}
+}
+
+const getQuoteFromApi = async () => {
+	// We have to use proxyUrl to make our api running
 	const proxyUrl = 'https://rocky-earth-03441.herokuapp.com/'
 	const apiUrl =
 		'http://api.forismatic.com/api/1.0/?method=getQuote&lang=en&format=json'
 
 	try {
+		showLoadingSpinner()
 		const response = await fetch(proxyUrl + apiUrl)
 		const data = await response.json()
 		console.log(data)
@@ -26,8 +40,10 @@ const getQuote = async () => {
 			: quoteText.classList.remove('long-quote')
 
 		quoteText.textContent = data.quoteText
+
+		stopLoadingSpinner()
 	} catch (error) {
-		getQuote()
+		getQuoteFromApi()
 	}
 }
 
@@ -42,8 +58,8 @@ const tweetQuote = () => {
 }
 
 // Event Listener
-newQuoteBtn.addEventListener('click', getQuote)
+newQuoteBtn.addEventListener('click', getQuoteFromApi)
 twitterBtn.addEventListener('click', tweetQuote)
 
 // On Load
-getQuote()
+getQuoteFromApi()
